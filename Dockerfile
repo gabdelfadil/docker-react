@@ -1,0 +1,9 @@
+FROM i386/node:10.24-alpine3.10 as builder
+WORKDIR '/app'
+COPY package.json .
+RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx
+COPY --from=builder /app/build /usr/share/nginx/html
